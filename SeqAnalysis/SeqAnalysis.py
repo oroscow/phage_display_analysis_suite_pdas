@@ -389,15 +389,25 @@ class PdasSeqAnalysis:
 
         workbook.close()
 
-    def run_analysis(self):
+    def run_analysis(self, output_path):
         """
         Run the sequence analysis process.
         """
         dna_sequences = self.read_seq_folder()
+        raw_ext = ['.seq', '.txt', '.ab1']
+        # create_dir_move_files(os.path.join(output_path, 'raw_data'),
+        #                       source_dir=output_path,
+        #                       filetype_list=raw_ext
+        #                       )
         
         trimmed_sequences = self.trim_seq(dna_sequences)
+        # for id, seq in trimmed_sequences.items():
+        #     export_batch_fasta(id, seq, 'dna_seq', output_path)
+            
         protein_sequences = self.translate_dna_dict_to_protein_dict(trimmed_sequences)
-        
+        # for id, seq in protein_sequences.items():
+        #     export_batch_fasta(id, seq, 'prot_seq', output_path)
+            
         unique_dna_sequences = self.count_unique_seqs_with_ids(trimmed_sequences)
         unique_protein_sequences = self.count_unique_seqs_with_ids(protein_sequences)
         
@@ -421,4 +431,4 @@ if __name__ == "__main__":
         dna_ref='ATGCAGATTTTCGTGAAAACCCTTACGGGGAAGACCATCACCCTCGAGGTTGAACCCTCGGATACGATAGAAAATGTAAAGGCCAAGATCCAGGATAAGGAAGGAATTCCTCCTGATCAGCAGAGACTGATCTTTGCTGGCAAGCAGCTGGAAGATGGACGTACTTTGTCTGACTACAATATTCAAAAGGAGTCTACTCTTCATCTTGTGTTGAGACTTCGTGGTGGTGCTAAGAAA',
         lib_file='ub_lib.json'
     )
-    analysis.run_analysis()
+    analysis.run_analysis(analysis.master_path)
