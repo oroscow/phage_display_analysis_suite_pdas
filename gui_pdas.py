@@ -3,7 +3,7 @@ import os
 import json
 from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QHBoxLayout, QLineEdit, QFormLayout, QTextEdit, QFileDialog, QPushButton, QComboBox
 from PyQt6.QtGui import QFont
-from SeqAnalysis import PdasSeqAnalysis
+from seq_analysis import PdasSeqAnalysis
 
 
 class PdasWindow(QMainWindow):
@@ -12,14 +12,12 @@ class PdasWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("PDAS")
-
-        # Initialize instance variable for JSON data
         self.json_data = None
 
         # Define layouts
         mainLayout = QVBoxLayout()
         topLayout = QVBoxLayout()
-        bottomLayout = QFormLayout()
+        bottom_layout = QFormLayout()
 
         # Create lines and buttons
         self.folder_path_edit = QLineEdit()
@@ -30,8 +28,8 @@ class PdasWindow(QMainWindow):
         run_button = QPushButton("Run")
         exit_button = QPushButton("Exit")
         button_layout = QHBoxLayout()
-        button_layout.addWidget(exit_button)
         button_layout.addWidget(run_button)
+        button_layout.addWidget(exit_button)
 
         # Connect buttons
         browse_folders_button.clicked.connect(
@@ -42,8 +40,7 @@ class PdasWindow(QMainWindow):
         exit_button.clicked.connect(self.close)
 
         # Connect combo box selection change
-        self.library_choice_combo.currentIndexChanged.connect(
-            self.update_display)
+        self.library_choice_combo.currentIndexChanged.connect(self.update_display)
 
         # Create horizontal layouts
         folder_layout = QHBoxLayout()
@@ -61,15 +58,15 @@ class PdasWindow(QMainWindow):
         introText.setFixedSize(400, 50)
         introText.setFont(font)
         topLayout.addWidget(introText)
-        bottomLayout.addRow("Input folder:", folder_layout)
-        bottomLayout.addRow("Library file:", library_layout)
-        bottomLayout.addRow("Library choice", self.library_choice_combo)
-        self._createDisplay(bottomLayout)
-        bottomLayout.addRow(button_layout)
+        bottom_layout.addRow("Input folder:", folder_layout)
+        bottom_layout.addRow("Library file:", library_layout)
+        bottom_layout.addRow("Library choice", self.library_choice_combo)
+        self._createDisplay(bottom_layout)
+        bottom_layout.addRow(button_layout)
 
         # Organize layouts
         mainLayout.addLayout(topLayout)
-        mainLayout.addLayout(bottomLayout)
+        mainLayout.addLayout(bottom_layout)
 
         # Create a central widget and set the main layout
         central_widget = QWidget()
@@ -122,7 +119,7 @@ class PdasWindow(QMainWindow):
         self.library_choice_combo.clear()
         try:
             with open(file_path, 'r') as file:
-                self.json_data = json.load(file)  # Store JSON data
+                self.json_data = json.load(file)
                 libraries = self.json_data.get("libraries", [])
                 names = [lib["name"] for lib in libraries if "name" in lib]
                 self.library_choice_combo.addItems(names)
@@ -163,16 +160,18 @@ class PdasWindow(QMainWindow):
 
     def run_button_click(self):
         """
-        Function to handle the Run button click event.
+        Handle the Run button click event.
         """
         selected_index = self.library_choice_combo.currentIndex()
-        if selected_index >= 0 and self.json_data:
-            selected_library = self.json_data["libraries"][selected_index]
-            print(f"Running analysis on: {selected_library['name']}")
+        folder_path = self.folder_path_edit.text()
+        library_file_path = self.library_file_edit.text()
+        if selected_index >= 0 and self.json_data and folder_path and library_file_path:
+            self.display.setPlainText("Running analysis...")
             self.run_process()
+            self.display.setPlainText("Analysis complete.")
         else:
             self.display.setPlainText(
-                "Please select a library before running.")
+                "Please select a folder and a library before running.")
 
     def run_process(self):
         """

@@ -35,7 +35,7 @@ class PdasSeqAnalysis:
         script_path = os.path.abspath(__file__)
         script_dir = os.path.dirname(script_path) + r'\files\libraries'
         formatted_path = format_path('', script_dir)
-        with open(formatted_path + self.lib_file, 'r') as file:
+        with open(self.lib_file, 'r') as file:
             data = json.load(file)
         for library in data['libraries']:
             if library['name'] == lib_name:
@@ -572,7 +572,7 @@ class PdasSeqAnalysis:
 if __name__ == "__main__":
 
     analysis = PdasSeqAnalysis(
-        input_path=r'C:\Users\spyro\Documents\Work\programming\phage_display_analysis_suite_pdas\SeqAnalysis\files\examples\input',
+        input_path=r'C:\Users\spyro\Documents\Work\programming\phage_display_analysis_suite_pdas\files\examples\input',
         lib_file='ub_libs.json',
         lib_name='Library 1'
         )
