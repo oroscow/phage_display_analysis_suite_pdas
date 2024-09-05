@@ -1,0 +1,1 @@
+pyinstaller --onedir --windowed --icon=C:\\Users\\spyro\\Documents\\work\\programming\\phage_display_analysis_suite_pdas\\files\\images\\icon.ico --add-data "C:\\Users\\spyro\\Documents\\work\\programming\\phage_display_analysis_suite_pdas\\seq_analysis.py:." C:\\Users\\spyro\\Documents\\work\\programming\\phage_display_analysis_suite_pdas\\gui_pdas.py

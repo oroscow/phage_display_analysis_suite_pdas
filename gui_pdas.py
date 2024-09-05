@@ -13,8 +13,12 @@ Simple GUI for seq_analysis.py.
 import sys
 import os
 import json
-from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QHBoxLayout, QLineEdit, QFormLayout, QTextEdit, QFileDialog, QPushButton, QComboBox
-from PyQt6.QtGui import QFont
+from PyQt6.QtWidgets import (
+    QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QHBoxLayout,
+    QLineEdit, QFormLayout, QTextEdit, QFileDialog, QPushButton, QComboBox,
+    QTabWidget
+    )
+from PyQt6.QtGui import QIcon
 from seq_analysis import PdasSeqAnalysis
 
 
@@ -23,12 +27,25 @@ class PdasWindow(QMainWindow):
 
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("PDAS")
+        self.setWindowIcon(QIcon('C:\\Users\\spyro\\Documents\\work\\programming\\phage_display_analysis_suite_pdas\\files\\images\\icon.ico'))
+        self.setWindowTitle("Phage Display Analysis Suite")
+        self.resize(200, 450)
         self.json_data = None
 
+        # Create the tab widget tabs
+        self.tabs = QTabWidget()
+        self.tab1 = QWidget()
+        self.tab2 = QWidget()
+        self._setup_tab1()
+        self._setup_tab2()
+        self.tabs.addTab(self.tab1, "Main")
+        self.tabs.addTab(self.tab2, "Troubleshooting")
+        self.setCentralWidget(self.tabs)
+
+    def _setup_tab1(self):
+        """Sets up content for tab 1 (main)."""
         # Define layouts
         mainLayout = QVBoxLayout()
-        topLayout = QVBoxLayout()
         bottom_layout = QFormLayout()
 
         # Create lines and buttons
@@ -63,27 +80,40 @@ class PdasWindow(QMainWindow):
         library_layout.addWidget(self.library_file_edit)
         library_layout.addWidget(browse_files_button)
 
-        # Add widgets
-        font = QFont()
-        font.setPointSize(16)
-        introText = QLabel("Phage Display Analysis Suite")
-        introText.setFixedSize(400, 50)
-        introText.setFont(font)
-        topLayout.addWidget(introText)
+        # Add widgets to the layout
         bottom_layout.addRow("Input folder:", folder_layout)
         bottom_layout.addRow("Library file:", library_layout)
         bottom_layout.addRow("Library choice", self.library_choice_combo)
         self._createDisplay(bottom_layout)
         bottom_layout.addRow(button_layout)
 
-        # Organize layouts
-        mainLayout.addLayout(topLayout)
+        # Set the layout to the tab
         mainLayout.addLayout(bottom_layout)
+        self.tab1.setLayout(mainLayout)
 
-        # Create a central widget and set the main layout
-        central_widget = QWidget()
-        central_widget.setLayout(mainLayout)
-        self.setCentralWidget(central_widget)
+    def _setup_tab2(self):
+        """Sets up content for tab 2 (troubleshooting)."""
+        layout = QVBoxLayout()
+
+        # Create a QTextEdit widget and set HTML content
+        html_text = QTextEdit()
+        html_text.setHtml("""
+        <h2>Troubleshooting</h2>
+        <p>This will be updated in the future with common issues.</p>
+        <p>To report any bugs, please do so on GitHub or <a href='mailto:spyrolivia@gmail.com'>email me</a>.</p>
+        <p>- Liv</p>
+        """)
+
+        # Make sure the QTextEdit widget is not editable
+        html_text.setReadOnly(True)
+
+        # Set the minimum height and width to make sure it is visible
+        html_text.setMinimumHeight(200)
+        html_text.setMinimumWidth(400)
+
+        # Add the QTextEdit to the layout
+        layout.addWidget(html_text)
+        self.tab2.setLayout(layout)
 
     def _createDisplay(self, layout):
         """
