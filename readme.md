@@ -29,6 +29,7 @@
 ## Built With
 
 - Python
+- QML (PyQt6)
 - HTML
 - Bash
 
