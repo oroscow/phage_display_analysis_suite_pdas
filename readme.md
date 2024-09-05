@@ -15,15 +15,19 @@
 ## Screenshots
 
 ![PDAS GUI](/files/images/screenshot1.png "PDAS GUI")
+
 *Main interface.*
 
 ![PDAS input files](/files/images/screenshot2.png "PDAS input files")
+
 *Example input files.*
 
 ![PDAS output files](/files/images/screenshot3.png "PDAS output files")
+
 *Example output file.*
 
 ![PDAS output folder](/files/images/screenshot4.png "PDAS output folder")
+
 *File organization post-analysis, where original input files remained untouched in the `raw_data` folder. `dna_seq.fasta` and `prot_seq.fasta` are batch fasta files containing the trimmed and translated version of all sequences included in analysis.*
 
 ## Built With
