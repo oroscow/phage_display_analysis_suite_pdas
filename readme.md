@@ -1,4 +1,4 @@
-<h1 align="center">Phage Display Analysis Suit (PDAS)</h1>
+<h1 align="center">Phage Display Analysis Suite (PDAS)</h1>
 
 <p align="left">Suite of codes for analyzing phage display data (*.fasta or *.txt/seq) by reading input DNA sequence files (if input file is *.fasta), converting to *.fasta (if input file is *.txt/seq), trimming at a specified motif with a desired length, translating DNA sequences to protein sequences, and colour codes diversified regions using built-in or custom formatting.</p>
 
@@ -24,7 +24,7 @@
 *Example output file.*
 
 ![PDAS output folder](/files/images/screenshot4.png "PDAS output folder")
-*File organization post-analysis, where original input files remained untouched in the `raw_data` folder.*
+*File organization post-analysis, where original input files remained untouched in the `raw_data` folder. `dna_seq.fasta` and `prot_seq.fasta` are batch fasta files containing the trimmed and translated version of all sequences included in analysis.*
 
 ## Built With
 
