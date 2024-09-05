@@ -3,12 +3,9 @@
 """
 seq_analysis.py
 
-Suite of code for analyzing phage display data (*.fasta or *.txt/seq) by sorting,
+Suite of codes for analyzing phage display data (*.fasta or *.txt/seq) by sorting,
 converting to *.fasta (if input file is *.txt/seq), trimming, and translating input sequences.
 """
-
-# TODO:
-# * 
 
 
 from tools.path_tools import format_path, strip_filetype, fetch_all_files, create_dir_move_files
@@ -40,20 +37,6 @@ class PdasSeqAnalysis:
                 break
         return lib_data
 
-    # def read_lib(self, lib_name):
-    #     """
-    #     Read phage display library data (*.json).
-    #     """
-    #     script_path = os.path.abspath(__file__)
-    #     script_dir = os.path.dirname(script_path) + r'\files\libraries'
-    #     formatted_path = format_path('', script_dir)
-    #     with open(formatted_path + self.lib_file, 'r') as file:
-    #         data = json.load(file)
-    #     for library in data['libraries']:
-    #         if library['name'] == lib_name:
-    #             lib_data = library
-    #             break
-    #     return lib_data
 
     def read_seq_folder(self):
         """
@@ -179,7 +162,7 @@ class PdasSeqAnalysis:
         """
         Export phage display data in protein and DNA formats as Excel worksheets.
         """
-        workbook = xlsxwriter.Workbook(self.master_path + 'results.xlsx')
+        workbook = xlsxwriter.Workbook(self.master_path + 'pdas_results.xlsx')
 
         # Set up formatting
         title_fmt = workbook.add_format({
@@ -559,20 +542,20 @@ class PdasSeqAnalysis:
 
         dna_sequences = self.read_seq_folder()
         raw_ext = ['.seq', '.txt', '.ab1']
-        # create_dir_move_files(os.path.join(output_path, 'raw_data'),
-        #                       source_dir=output_path,
-        #                       filetype_list=raw_ext
-        #                       )
+        create_dir_move_files(os.path.join(output_path, 'raw_data'),
+                              source_dir=output_path,
+                              filetype_list=raw_ext
+                              )
 
         trimmed_sequences = self.trim_seq(
             dna_sequences, trim_motif, trim_length)
-        # for id, seq in trimmed_sequences.items():
-        #     export_batch_fasta(id, seq, 'dna_seq', output_path)
+        for id, seq in trimmed_sequences.items():
+            export_batch_fasta(id, seq, 'dna_seq', output_path)
 
         protein_sequences = self.translate_dna_dict_to_protein_dict(
             trimmed_sequences)
-        # for id, seq in protein_sequences.items():
-        #     export_batch_fasta(id, seq, 'prot_seq', output_path)
+        for id, seq in protein_sequences.items():
+            export_batch_fasta(id, seq, 'prot_seq', output_path)
 
         dna_unique_sequences = self.count_unique_seqs_with_ids(
             trimmed_sequences)

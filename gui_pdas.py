@@ -6,17 +6,14 @@ gui_pdas.py
 Simple GUI for seq_analysis.py.
 """
 
-# TODO:
-# * Compare with other programs (accessibility-wise, do they have GUI, custom libraries, etc)
-
 
 import sys
 import os
 import json
 from PyQt6.QtWidgets import (
-    QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget, QHBoxLayout,
-    QLineEdit, QFormLayout, QTextEdit, QFileDialog, QPushButton, QComboBox,
-    QTabWidget
+    QApplication, QMainWindow, QVBoxLayout, QWidget, QHBoxLayout,
+    QLineEdit, QFormLayout, QTextEdit, QFileDialog, QPushButton,
+    QComboBox, QTabWidget
     )
 from PyQt6.QtGui import QIcon
 from seq_analysis import PdasSeqAnalysis
@@ -80,14 +77,14 @@ class PdasWindow(QMainWindow):
         library_layout.addWidget(self.library_file_edit)
         library_layout.addWidget(browse_files_button)
 
-        # Add widgets to the layout
+        # Add widgets to layouts
         bottom_layout.addRow("Input folder:", folder_layout)
         bottom_layout.addRow("Library file:", library_layout)
         bottom_layout.addRow("Library choice", self.library_choice_combo)
         self._createDisplay(bottom_layout)
         bottom_layout.addRow(button_layout)
 
-        # Set the layout to the tab
+        # Set layouts to tabs
         mainLayout.addLayout(bottom_layout)
         self.tab1.setLayout(mainLayout)
 
