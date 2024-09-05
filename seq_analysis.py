@@ -8,7 +8,7 @@ converting to *.fasta (if input file is *.txt/seq), trimming, and translating in
 """
 
 # TODO:
-# * Write library choice to a cell in the output worksheets
+# * 
 
 
 from tools.path_tools import format_path, strip_filetype, fetch_all_files, create_dir_move_files
@@ -22,23 +22,23 @@ import json
 
 
 class PdasSeqAnalysis:
-    def __init__(self, input_path, lib_file, lib_name):
+    def __init__(self, input_path, lib_file, lib_id):
         self.master_path = format_path('', input_path)
         self.lib_file = lib_file
-        self.lib_name = lib_name
+        self.lib_id = lib_id
         self.nt_regex = r'[ATCGatcg]+'
 
-    def read_lib(self, lib_name):
+    def read_lib(self, lib_id):
         """
         Read phage display library data (*.json).
         """
         script_path = os.path.abspath(__file__)
         script_dir = os.path.dirname(script_path) + r'\files\libraries'
-        formatted_path = format_path('', script_dir)
-        with open(self.lib_file, 'r') as file:
+        lib_path = format_path(self.lib_file, script_dir)
+        with open(lib_path, 'r') as file:
             data = json.load(file)
         for library in data['libraries']:
-            if library['name'] == lib_name:
+            if library['name'] == lib_id:
                 lib_data = library
                 break
         return lib_data
@@ -169,7 +169,7 @@ class PdasSeqAnalysis:
         """
         workbook = xlsxwriter.Workbook(self.master_path + 'results.xlsx')
 
-        # Setup Excel formats
+        # Set up formatting
         title_fmt = workbook.add_format({
             'bold': True,
             'font_size': 11,
@@ -220,6 +220,7 @@ class PdasSeqAnalysis:
             'valign': 'vcenter',
             'font_name': 'Segoe UI'
         })
+        lib_fmt = id_fmt
         r1_fmt = workbook.add_format({'bg_color': '#BD7191'})
         r2_fmt = workbook.add_format({'bg_color': '#4eb6bb'})
         r3_fmt = workbook.add_format({'bg_color': '#ffc65d'})
@@ -297,6 +298,9 @@ class PdasSeqAnalysis:
             ids_str = ', '.join(map(str, data['ids']))
             worksheet1.write(id_row, id_col, ids_str, id_fmt)
             id_row += 1
+        
+        worksheet1.write(len(protein_dict_conserved) + 6, 1, f"Library ID: {self.lib_id}", lib_fmt)
+        worksheet1.write(len(protein_dict_conserved) + 7, 1, f"Reference: {lib_data['reference']}", lib_fmt)
 
         # Full protein sequences
         worksheet2 = workbook.add_worksheet('Protein Seq (Full)')
@@ -371,6 +375,9 @@ class PdasSeqAnalysis:
             ids_str = ', '.join(map(str, data['ids']))
             worksheet2.write(id_row, id_col, ids_str, id_fmt)
             id_row += 1
+            
+        worksheet2.write(len(protein_dict) + 6, 1, f"Library ID: {self.lib_id}", lib_fmt)
+        worksheet2.write(len(protein_dict) + 7, 1, f"Reference: {lib_data['reference']}", lib_fmt)
 
         # Conserved DNA sequences
         worksheet3 = workbook.add_worksheet('DNA Seq (Conserved)')
@@ -445,6 +452,9 @@ class PdasSeqAnalysis:
             ids_str = ', '.join(map(str, data['ids']))
             worksheet3.write(id_row, id_col, ids_str, id_fmt)
             id_row += 1
+            
+        worksheet3.write(len(dna_dict_conserved) + 6, 1, f"Library ID: {self.lib_id}", lib_fmt)
+        worksheet3.write(len(dna_dict_conserved) + 7, 1, f"Reference: {lib_data['reference']}", lib_fmt)
 
         # Full DNA sequences
         worksheet4 = workbook.add_worksheet('DNA Seq (Full)')
@@ -519,6 +529,9 @@ class PdasSeqAnalysis:
             ids_str = ', '.join(map(str, data['ids']))
             worksheet4.write(id_row, id_col, ids_str, id_fmt)
             id_row += 1
+            
+        worksheet4.write(len(dna_dict) + 6, 1, f"Library ID: {self.lib_id}", lib_fmt)
+        worksheet4.write(len(dna_dict) + 7, 1, f"Reference: {lib_data['reference']}", lib_fmt)
 
         workbook.close()
 
@@ -526,7 +539,7 @@ class PdasSeqAnalysis:
         """
         Run the sequence analysis process.
         """
-        library_data = self.read_lib(self.lib_name)
+        library_data = self.read_lib(self.lib_id)
         trim_motif = library_data.get('trim motif')
         trim_length = library_data.get('trim length')
         dna_ref = library_data.get('dna reference')
@@ -574,6 +587,6 @@ if __name__ == "__main__":
     analysis = PdasSeqAnalysis(
         input_path=r'C:\Users\spyro\Documents\Work\programming\phage_display_analysis_suite_pdas\files\examples\input',
         lib_file='ub_libs.json',
-        lib_name='Library 1'
+        lib_id='Library 1'
         )
     analysis.run_analysis(analysis.master_path)
