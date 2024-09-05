@@ -18,13 +18,19 @@
 
 *Main interface.*
 
+---
+
 ![PDAS input files](/files/images/screenshot2.png "PDAS input files")
 
 *Example input files.*
 
+---
+
 ![PDAS output files](/files/images/screenshot3.png "PDAS output files")
 
 *Example output file.*
+
+---
 
 ![PDAS output folder](/files/images/screenshot4.png "PDAS output folder")
 
