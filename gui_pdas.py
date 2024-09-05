@@ -178,10 +178,10 @@ class PdasWindow(QMainWindow):
         selected_index = self.library_choice_combo.currentIndex()
         folder_path = self.folder_path_edit.text()
         library_file_path = self.library_file_edit.text()
-        self.display.setHtml("<p>Running analysis...</p>")
         if selected_index >= 0 and self.json_data and folder_path and library_file_path:
+            self.display.setHtml("<p><i>Running analysis...</i></p>")
             self.run_process()
-            self.display.setHtml("<p>Analysis complete.</p>")
+            self.display.setHtml("<p><i>Analysis complete.</i></p>")
         else:
             self.display.setHtml(
                 "<p><i>Please select a folder and a library before running.</i></p>")

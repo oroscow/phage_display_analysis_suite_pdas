@@ -22,26 +22,38 @@ import json
 
 
 class PdasSeqAnalysis:
-    def __init__(self, input_path, lib_file, lib_id):
+    def __init__(self, input_path, lib_file, lib_name):
         self.master_path = format_path('', input_path)
         self.lib_file = lib_file
-        self.lib_id = lib_id
+        self.lib_name = lib_name
         self.nt_regex = r'[ATCGatcg]+'
 
-    def read_lib(self, lib_id):
+    def read_lib(self, lib_name):
         """
         Read phage display library data (*.json).
         """
-        script_path = os.path.abspath(__file__)
-        script_dir = os.path.dirname(script_path) + r'\files\libraries'
-        lib_path = format_path(self.lib_file, script_dir)
-        with open(lib_path, 'r') as file:
+        with open(self.lib_file, 'r') as file:
             data = json.load(file)
         for library in data['libraries']:
-            if library['name'] == lib_id:
+            if library['name'] == lib_name:
                 lib_data = library
                 break
         return lib_data
+
+    # def read_lib(self, lib_name):
+    #     """
+    #     Read phage display library data (*.json).
+    #     """
+    #     script_path = os.path.abspath(__file__)
+    #     script_dir = os.path.dirname(script_path) + r'\files\libraries'
+    #     formatted_path = format_path('', script_dir)
+    #     with open(formatted_path + self.lib_file, 'r') as file:
+    #         data = json.load(file)
+    #     for library in data['libraries']:
+    #         if library['name'] == lib_name:
+    #             lib_data = library
+    #             break
+    #     return lib_data
 
     def read_seq_folder(self):
         """
@@ -299,7 +311,7 @@ class PdasSeqAnalysis:
             worksheet1.write(id_row, id_col, ids_str, id_fmt)
             id_row += 1
         
-        worksheet1.write(len(protein_dict_conserved) + 6, 1, f"Library ID: {self.lib_id}", lib_fmt)
+        worksheet1.write(len(protein_dict_conserved) + 6, 1, f"Library ID: {self.lib_name}", lib_fmt)
         worksheet1.write(len(protein_dict_conserved) + 7, 1, f"Reference: {lib_data['reference']}", lib_fmt)
 
         # Full protein sequences
@@ -376,7 +388,7 @@ class PdasSeqAnalysis:
             worksheet2.write(id_row, id_col, ids_str, id_fmt)
             id_row += 1
             
-        worksheet2.write(len(protein_dict) + 6, 1, f"Library ID: {self.lib_id}", lib_fmt)
+        worksheet2.write(len(protein_dict) + 6, 1, f"Library ID: {self.lib_name}", lib_fmt)
         worksheet2.write(len(protein_dict) + 7, 1, f"Reference: {lib_data['reference']}", lib_fmt)
 
         # Conserved DNA sequences
@@ -453,7 +465,7 @@ class PdasSeqAnalysis:
             worksheet3.write(id_row, id_col, ids_str, id_fmt)
             id_row += 1
             
-        worksheet3.write(len(dna_dict_conserved) + 6, 1, f"Library ID: {self.lib_id}", lib_fmt)
+        worksheet3.write(len(dna_dict_conserved) + 6, 1, f"Library ID: {self.lib_name}", lib_fmt)
         worksheet3.write(len(dna_dict_conserved) + 7, 1, f"Reference: {lib_data['reference']}", lib_fmt)
 
         # Full DNA sequences
@@ -530,7 +542,7 @@ class PdasSeqAnalysis:
             worksheet4.write(id_row, id_col, ids_str, id_fmt)
             id_row += 1
             
-        worksheet4.write(len(dna_dict) + 6, 1, f"Library ID: {self.lib_id}", lib_fmt)
+        worksheet4.write(len(dna_dict) + 6, 1, f"Library ID: {self.lib_name}", lib_fmt)
         worksheet4.write(len(dna_dict) + 7, 1, f"Reference: {lib_data['reference']}", lib_fmt)
 
         workbook.close()
@@ -539,7 +551,7 @@ class PdasSeqAnalysis:
         """
         Run the sequence analysis process.
         """
-        library_data = self.read_lib(self.lib_id)
+        library_data = self.read_lib(self.lib_name)
         trim_motif = library_data.get('trim motif')
         trim_length = library_data.get('trim length')
         dna_ref = library_data.get('dna reference')
@@ -547,20 +559,20 @@ class PdasSeqAnalysis:
 
         dna_sequences = self.read_seq_folder()
         raw_ext = ['.seq', '.txt', '.ab1']
-        create_dir_move_files(os.path.join(output_path, 'raw_data'),
-                              source_dir=output_path,
-                              filetype_list=raw_ext
-                              )
+        # create_dir_move_files(os.path.join(output_path, 'raw_data'),
+        #                       source_dir=output_path,
+        #                       filetype_list=raw_ext
+        #                       )
 
         trimmed_sequences = self.trim_seq(
             dna_sequences, trim_motif, trim_length)
-        for id, seq in trimmed_sequences.items():
-            export_batch_fasta(id, seq, 'dna_seq', output_path)
+        # for id, seq in trimmed_sequences.items():
+        #     export_batch_fasta(id, seq, 'dna_seq', output_path)
 
         protein_sequences = self.translate_dna_dict_to_protein_dict(
             trimmed_sequences)
-        for id, seq in protein_sequences.items():
-            export_batch_fasta(id, seq, 'prot_seq', output_path)
+        # for id, seq in protein_sequences.items():
+        #     export_batch_fasta(id, seq, 'prot_seq', output_path)
 
         dna_unique_sequences = self.count_unique_seqs_with_ids(
             trimmed_sequences)
@@ -586,7 +598,7 @@ if __name__ == "__main__":
 
     analysis = PdasSeqAnalysis(
         input_path=r'C:\Users\spyro\Documents\Work\programming\phage_display_analysis_suite_pdas\files\examples\input',
-        lib_file='ub_libs.json',
-        lib_id='Library 1'
+        lib_file=r'C:\Users\spyro\Documents\Work\programming\phage_display_analysis_suite_pdas\files\libraries\ub_libs.json',
+        lib_name='Library 1'
         )
     analysis.run_analysis(analysis.master_path)
