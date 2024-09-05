@@ -24,7 +24,7 @@
 *Example output file.*
 
 ![PDAS output folder](/files/images/screenshot4.png "PDAS output folder")
-*File organization post-analysis, where original input files remained untouched in the ``.*
+*File organization post-analysis, where original input files remained untouched in the `raw_data` folder.*
 
 ## Built With
 
