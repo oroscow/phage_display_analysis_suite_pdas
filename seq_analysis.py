@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
 """
-SeqAnalysis.py
+seq_analysis.py
 
 Suite of code for analyzing phage display data (*.fasta or *.txt/seq) by sorting,
 converting to *.fasta (if input file is *.txt/seq), trimming, and translating input sequences.
 """
 
 # TODO:
-# * Compare with other programs (accessibility-wise, do they have GUI, custom libraries, etc)
+# * Write library choice to a cell in the output worksheets
 
 
 from tools.path_tools import format_path, strip_filetype, fetch_all_files, create_dir_move_files

@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+
+"""
+gui_pdas.py
+
+Simple GUI for seq_analysis.py.
+"""
+
+# TODO:
+# * Compare with other programs (accessibility-wise, do they have GUI, custom libraries, etc)
+
+
 import sys
 import os
 import json
@@ -79,8 +91,8 @@ class PdasWindow(QMainWindow):
         """
         self.display = QTextEdit()
         self.display.setReadOnly(True)
-        self.display.setPlainText(
-            "Library data will appear here when selected.")
+        self.display.setHtml(
+            "<p><i>Library data will appear here when selected.</i></p>")
         layout.addWidget(self.display)
 
     def browse_folders(self, line_edit):
@@ -134,28 +146,29 @@ class PdasWindow(QMainWindow):
         if selected_index >= 0 and self.json_data:
             library = self.json_data["libraries"][selected_index]
             display_text = self.format_library_info(library)
-            self.display.setPlainText(display_text)
+            self.display.setHtml(display_text)
         else:
-            self.display.setPlainText(
-                "Library data will appear here when selected.")
+            self.display.setHtml(
+                "<p><i>Library data will appear here when selected.</i></p>")
 
     def format_library_info(self, library):
         """
         Format all library information for display.
         """
         info = (
-            f"Name: {library.get('name', 'N/A')}\n"
-            f"Reference: {library.get('reference', 'N/A')}\n"
-            f"Trim Motif: {library.get('trim motif', 'N/A')}\n"
-            f"Trim Length: {library.get('trim length', 'N/A')}\n"
-            f"DNA Reference: {library.get('dna reference', 'N/A')}\n"
-            f"Protein Reference: {library.get('protein reference', 'N/A')}\n"
-            f"Diversified Residues:\n"
+            f"<p><b>Name:</b> {library.get('name', 'N/A')}</p>"
+            f"<p><b>Reference:</b> {library.get('reference', 'N/A')}</p>"
+            f"<p><b>Trim Motif:</b> {library.get('trim motif', 'N/A')}</p>"
+            f"<p><b>Trim Length:</b> {library.get('trim length', 'N/A')}</p>"
+            f"<p><b>DNA Reference:</b> {library.get('dna reference', 'N/A')}</p>"
+            f"<p><b>Protein Reference:</b> {library.get('protein reference', 'N/A')}</p>"
+            f"<p><b>Diversified Residues:</b><br>"
         )
         diversified_residues = library.get("diversified_residues", {})
         for region, positions in diversified_residues.items():
             positions_str = ", ".join(map(str, positions))
-            info += f"  {region} - {positions_str}\n"
+            info += f"<i>{region}</i> - {positions_str}<br>"
+        info += "</p>"
         return info
 
     def run_button_click(self):
@@ -165,13 +178,13 @@ class PdasWindow(QMainWindow):
         selected_index = self.library_choice_combo.currentIndex()
         folder_path = self.folder_path_edit.text()
         library_file_path = self.library_file_edit.text()
+        self.display.setHtml("<p>Running analysis...</p>")
         if selected_index >= 0 and self.json_data and folder_path and library_file_path:
-            self.display.setPlainText("Running analysis...")
             self.run_process()
-            self.display.setPlainText("Analysis complete.")
+            self.display.setHtml("<p>Analysis complete.</p>")
         else:
-            self.display.setPlainText(
-                "Please select a folder and a library before running.")
+            self.display.setHtml(
+                "<p><i>Please select a folder and a library before running.</i></p>")
 
     def run_process(self):
         """
@@ -181,8 +194,8 @@ class PdasWindow(QMainWindow):
         lib_file_path = self.library_file_edit.text()
         selected_library_name = self.library_choice_combo.currentText()
         if not input_folder or not lib_file_path or not selected_library_name:
-            self.display.setPlainText(
-                "Please fill in all required fields and select a library.")
+            self.display.setHtml(
+                "<p><i>Please fill in all required fields and select a library.</i></p>")
             return
         analysis = PdasSeqAnalysis(
             input_path=input_folder,
