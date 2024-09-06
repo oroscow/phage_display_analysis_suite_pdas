@@ -1,8 +1,8 @@
 <h1 align="center">Phage Display Analysis Suite (PDAS)</h1>
 
-<p align="left">Suite of codes for analyzing phage display data (*.fasta or *.txt/seq) by reading input DNA sequence files (if input file is *.fasta), converting to *.fasta (if input file is *.txt/seq), trimming at a specified motif with a desired length, translating DNA sequences to protein sequences, and colour codes diversified regions using built-in or custom formatting.</p>
+<p align="left">Suite of codes for analyzing bulk phage display sequencing data (*.fasta or *.txt/seq) by reading input DNA sequence files, converting to *.fasta (if input file is *.txt/seq), trimming at a specified motif with a desired length, translating DNA sequences to protein sequences, and colour codes diversified regions using built-in or custom formatting.</p>
 
-<p>The program works very simply; locate the folder with your input files and the library file with the desired formatting, The file will be previewed below once selected and the combo box will be populated with the names of all libraries contained within the library file. Select the desired library name, then run.</p>
+<p>This program works very simply; locate the folder with your input files and the library file with the desired formatting, The file will be previewed below once selected and the combo box will be populated with the names of all libraries contained within the library file. Select the desired library name, then run.</p>
 
 <p>Please note the text formatting of the library file (*.json), this formatting must be adhered to for custom libraries to work.</p>
 
@@ -45,7 +45,7 @@
 
 ## Future Updates
 
-- [ ] Populate folder/file browsers with default paths.
+- [x] Set default paths for folder/file browsers.
 - [ ] Use a more descriptive name for final output.
 
 ## Author

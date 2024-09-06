@@ -10,6 +10,7 @@ Simple GUI for seq_analysis.py.
 import sys
 import os
 import json
+from pathlib import Path
 from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QVBoxLayout, QWidget, QHBoxLayout,
     QLineEdit, QFormLayout, QTextEdit, QFileDialog, QPushButton,
@@ -126,11 +127,12 @@ class PdasWindow(QMainWindow):
         """
         Function for browsing and selecting folders.
         """
-        home_dir = os.path.expanduser("~")
+        home_dir = Path.home()
+        default_dir = os.path.join(home_dir, "Downloads")
         dir_path = QFileDialog.getExistingDirectory(
             self,
             "Select Directory",
-            home_dir,
+            default_dir,
             QFileDialog.Option.ShowDirsOnly
         )
         if dir_path:
@@ -138,13 +140,14 @@ class PdasWindow(QMainWindow):
 
     def browse_files(self, line_edit):
         """
-        Function for browsing and selecting a single file.
+        Function for browsing and selecting a single file with a default file pre-selected.
         """
-        home_dir = os.path.expanduser("~")
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+        default_file = os.path.join(script_dir, "files/libraries/ub_lib.json")
         file_path, _ = QFileDialog.getOpenFileName(
             self,
             "Select File",
-            home_dir,
+            default_file,
             "JSON files (*.json);;All files (*.*)"
         )
         if file_path:
