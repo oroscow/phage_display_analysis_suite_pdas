@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=c:\Users\spyro\Documents\Work\programming\phage_display_analysis_suite_pdas\.venv
+set VIRTUAL_ENV=c:\Users\spyro\GitHub\phage_display_analysis_suite_pdas\.venv
 
 if not defined PROMPT set PROMPT=$P$G
 

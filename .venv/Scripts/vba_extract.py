@@ -1,4 +1,4 @@
-#!c:\Users\spyro\Documents\Work\programming\phage_display_analysis_suite_pdas\.venv\Scripts\python.exe
+#!c:\Users\spyro\GitHub\phage_display_analysis_suite_pdas\.venv\Scripts\python.exe
 
 ##############################################################################
 #
