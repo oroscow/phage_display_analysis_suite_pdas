@@ -47,6 +47,7 @@
 
 - [ ] Set default paths for folder/file browsers (first try didn't work).
 - [ ] Use a more descriptive name for final output.
+- [ ] Incorporate PyRosetta/AlphaFold/etc.
 
 ## Author
 
